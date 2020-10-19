@@ -105,8 +105,13 @@
 <body>
 	<div class="disabled_overlay"></div>
 	<div class="wrapper">
+        <div id="live_button">
+            <button disabled="disabled" class="btn btn--floating actions-button js-live-preview-btn" data-href="/">Live Preview</button>
+        </div>
+        <!--
 		<input id="live_input" type="text" placeholder="Type in the complete slug of the content">
-		<div id="live_button"><button><a target="_blank" href="https://fe.qa.ncoa.org/">Live Preview</a></button></div>
+        <div id="live_button"><button><a target="_blank" href="https://fe.qa.ncoa.org/">Live Preview</a></button></div>
+        -->
 	</div>
 
     <!-- Custom logic of the Custom element -->
@@ -146,7 +151,37 @@
         }
       
         function initCustomElement() {
+            const btn = document.querySelector('.js-live-preview-btn');
+            const domain = 'https://fe.qa.ncoa.org/';
+
             try {
+                CustomElement.init((_, context) => {
+                    console.log(context);
+                    
+                    let url = null;
+
+                    // url field for article, standard page, standard page (special)
+                    CustomElement.getElementValue('url', value => {
+                        if (value) {
+                            url = value;
+                        }
+                    });
+
+                    // url field for category page
+                    CustomElement.getElementValue('category_page_url', value => {
+                        if (value) {
+                            url = value;
+                        }
+                    });
+
+                    if (!url) {
+                        btn.setAttribute('disabled', 'disabled');
+                    } else {
+                        
+                    }
+                });
+                /*
+                
                 CustomElement.init((element, _context) => {
 				  var width = (element.config?element.config.width:"400");
 				  var height = (element.config?element.config.height:"300");
@@ -155,13 +190,21 @@
                   updateDisabled(element.disabled);
                   updateSize();
                 });
+
+                */
+
                 // React when the disabled state changes (e.g. when publishing the item)
-                CustomElement.onDisabledChanged(updateDisabled);
+                // CustomElement.onDisabledChanged(updateDisabled);
             } catch (err) {
                 // Initialization with the Custom elements API failed 
                 // (page displayed outside of the Kentico Cloud UI)
+                
+                console.error(err);
+                btn.setAttribute('disabled', 'disabled');
+                /*
                 console.error(err);
                 updateDisabled(true);
+                */
             }
         }
       
