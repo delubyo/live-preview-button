@@ -153,7 +153,7 @@
 				  var width = (element.config?element.config.width:"400");
                   var height = (element.config?element.config.height:"300");
 
-                  CustomElement.getItemDetails([context.item.id]).then(([data]) => {
+                  CustomElement.getItemDetails([_context.item.id]).then(([data]) => {
                     const { codename: type } = data.type;
                     let url = null;
 
