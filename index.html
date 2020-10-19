@@ -156,7 +156,8 @@
 
             try {
                 CustomElement.init((_, context) => {
-                    console.log(context);
+                    // console.log(context);
+                    CustomElement.getItemDetails([context.item.id]).then(data => console.log(data));
                     
                     let url = null;
 
