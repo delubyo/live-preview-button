@@ -131,6 +131,8 @@
                                         link.setAttribute('href', buildArticleUrl(url));
                                     } else if (/taxonomy_custom_content/ig.test(type)) {
                                         link.setAttribute('href', `${domain}/${url}`);
+                                    } else {
+                                        
                                     }
 
                                     link.setAttribute('target', '_blank');
@@ -153,9 +155,16 @@
 
                             try {
                                 CustomElement.getElementValue('category_page_url', elementValueCallback);
-                                CustomElement.observeElementChanges(['url', changeValueCallback]);
+                                CustomElement.observeElementChanges(['category_page_url', changeValueCallback]);
                             } catch(err) {
                                 console.log('custom element get value', 'category_page_url', err);
+                            }
+
+                            try {
+                                CustomElement.getElementValue('parent_page', elementValueCallback);
+                                CustomElement.observeElementChanges(['parent_page', changeValueCallback]);
+                            } catch(err) {
+                                console.log('custom element get value', 'parent_page', err);
                             }
                         });
                 });
