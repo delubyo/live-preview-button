@@ -120,22 +120,20 @@
                         .then(([data]) => {
                             console.log('live preview content detected', data);
                             const { codename: type } = data.type;
-                            let url = null;
+
+                            const callback = (url) => {
+                                if (url) {
+                                    console.log('live preview url value found', url);
+    
+                                    if (/article/ig.test(type)) {
+                                        url = buildArticleUrl(url);
+                                        console.log('live preview url type article', url);
+                                    }
+                                }
+                            };
 
                             // url field for article, standard page, standard page (special)
-                            CustomElement.getElementValue('url', value => {
-                                console.log('fetching element url', value);
-                                url = value || url;
-                            });
-
-                            if (url) {
-                                console.log('live preview url value found', url);
-
-                                if (/article/ig.test(type)) {
-                                    url = buildArticleUrl(url);
-                                    console.log('live preview url type article', url);
-                                }
-                            }
+                            CustomElement.getElementValue('url', callback);
                         });
                 });
             } catch (err) {
