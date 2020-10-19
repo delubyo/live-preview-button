@@ -137,18 +137,29 @@
                             };
 
                             const changeValueCallback = (codeNames) => {
-                                if (codeNames.length > 0 && codeNames[0] === 'url') {
+                                if (codeNames.length > 0 && (codeNames[0] === 'url' || codeNames[0] === 'category_page_url')) {
                                     CustomElement.getElementValue(codeNames[0], elementValueCallback);
                                 }
                             };
 
                             // url field for article, standard page, standard page (special)
-                            CustomElement.getElementValue('url', elementValueCallback);
-                            CustomElement.observeElementChanges(['url'], changeValueCallback);
+                            try {
+                                CustomElement.getElementValue('url', elementValueCallback);
+                                CustomElement.observeElementChanges(['url'], changeValueCallback);
+                            } catch (err) {
+                                console.log('custom element get value', 'url', err);
+                            }
+
+                            try {
+                                CustomElement.getElementValue('category_page_url', elementValueCallback);
+                                CustomElement.observeElementChanges(['url', changeValueCallback]);
+                            } catch(err) {
+                                console.log('custom element get value', 'category_page_url', err);
+                            }
                         });
                 });
             } catch (err) {
-                console.error(error);
+                console.log('custom element init', err);
             }
         })();
     </script>
