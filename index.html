@@ -131,7 +131,7 @@
                                     if (/article/ig.test(type)) {
                                         link.setAttribute('href', buildArticleUrl(url));
                                     } else if (/taxonomy_custom_content/ig.test(type)) {
-                                        link.setAttribute('href', `/${url}`);
+                                        link.setAttribute('href', `${domain}/${url}`);
                                     }
 
                                     link.setAttribute('target', '_blank');
