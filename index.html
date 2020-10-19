@@ -105,17 +105,13 @@
 <body>
 	<div class="disabled_overlay"></div>
 	<div class="wrapper">
-        <div id="live_button">
-            <button disabled="disabled" class="btn btn--floating actions-button js-live-preview-btn" data-href="/">Live Preview</button>
-        </div>
-        <!--
-		<input id="live_input" type="text" placeholder="Type in the complete slug of the content">
-        <div id="live_button"><button><a target="_blank" href="https://fe.qa.ncoa.org/">Live Preview</a></button></div>
-        -->
+		<input id="live_input" type="hidden">
+        <div id="live_button"><button>Live Preview</button></div>
 	</div>
 
     <!-- Custom logic of the Custom element -->
-    <script>      
+    <script>    
+        /**   
         function updateDisabled(disabled) {
             if (disabled) {
                 $('.disabled_overlay').show();
@@ -149,53 +145,9 @@
             const height = parseInt($("html").height());
             CustomElement.setHeight(height);
         }
-
-        const domain = 'https://fe.qa.ncoa.org';
-
-        const buildArticleUrl = (string) => {
-            return `${domain}/article/${string}`;
-        };
       
         function initCustomElement() {
-            const btn = document.querySelector('.js-live-preview-btn');
-
-            btn.addEventListener('click', () => {
-                const url = btn.getAttribute('data-href');
-                window.open(url, '_blank');
-            });
-            
             try {
-                CustomElement.init((_, context) => {
-                    CustomElement.getItemDetails([context.item.id]).then(([data]) => {
-                        const { codename: type } = data.type;
-                        let url = null;
-
-                        // url field for article, standard page, standard page (special)
-                        CustomElement.getElementValue('url', value => {
-                            if (value) {
-                                url = value;
-                            }
-                        });
-
-                        // url field for category page
-                        /* CustomElement.getElementValue('category_page_url', value => {
-                            if (value) {
-                                url = value;
-                            }
-                        }); */
-
-                        if (!url) {
-                            btn.setAttribute('disabled', 'disabled');
-                        } else {
-                            if (/article/ig.test(type)) {
-                                btn.setAttribute('data-href', buildArticleUrl(url));
-                                btn.removeAttribute('disabled');
-                            }
-                        }
-                    });
-                });
-                /*
-                
                 CustomElement.init((element, _context) => {
 				  var width = (element.config?element.config.width:"400");
 				  var height = (element.config?element.config.height:"300");
@@ -204,26 +156,18 @@
                   updateDisabled(element.disabled);
                   updateSize();
                 });
-
-                */
-
                 // React when the disabled state changes (e.g. when publishing the item)
-                // CustomElement.onDisabledChanged(updateDisabled);
+                CustomElement.onDisabledChanged(updateDisabled);
             } catch (err) {
                 // Initialization with the Custom elements API failed 
                 // (page displayed outside of the Kentico Cloud UI)
-                
-                console.error(err);
-                btn.setAttribute('disabled', 'disabled');
-                /*
                 console.error(err);
                 updateDisabled(true);
-                */
             }
         }
       
         initCustomElement();
-      
+      */
     </script>
 </body>
 </html>
