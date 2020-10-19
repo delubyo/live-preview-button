@@ -165,7 +165,7 @@
             });
             
             try {
-                CustomElement.init(() => {
+                CustomElement.init((_, context) => {
                     CustomElement.getItemDetails([context.item.id]).then(([data]) => {
                         const { codename: type } = data.type;
                         let url = null;
