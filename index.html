@@ -105,8 +105,8 @@
 <body>
 	<div class="disabled_overlay"></div>
 	<div class="wrapper">
-		<input id="live_input" type="text" placeholder="Type in the complete slug of the content">
-		<div id="live_button"><button><a target="_blank" href="https://fe.qa.ncoa.org/">Live Preview</a></button></div>
+		<input id="live_input" type="hidden">
+		<div id="live_button"></div>
 	</div>
 
     <!-- Custom logic of the Custom element -->
@@ -122,7 +122,7 @@
       
         function showButton(value) {			
 			if (value) {
-				$("#live_button").html('<button class="btn btn--primary"><a target="_blank" href="https://fe.qa.ncoa.org/'+value+'">Click to Preview on Live</a></button>');
+				$("#live_button").html('<a class="btn btn--primary" target="_blank" href="'+value+'">Click to Preview on Live</a>');
 			}
 			else {
 				$("#live_button").html('');
@@ -133,10 +133,6 @@
         function setup(value) {
 			$("#live_input").val(value);
 			showButton(value);
-			$("#live_input").on('input', function() {
-				CustomElement.setValue($(this).val());
-				showButton($(this).val()); 
-			});
         }
       
         function updateSize() {
@@ -144,16 +140,34 @@
             const height = parseInt($("html").height());
             CustomElement.setHeight(height);
         }
+
+        const domain = 'https://fe.qa.ncoa.org';
+
+        const buildArticleUrl = (string) => {
+            return `${domain}/article/${string}`;
+        };
       
         function initCustomElement() {
             try {
                 CustomElement.init((element, _context) => {
 				  var width = (element.config?element.config.width:"400");
-				  var height = (element.config?element.config.height:"300");
-                  // Setup with initial value and disabled state
-                  setup(element.value);  
-                  updateDisabled(element.disabled);
-                  updateSize();
+                  var height = (element.config?element.config.height:"300");
+
+                  CustomElement.getItemDetails([context.item.id]).then(([data]) => {
+                    const { codename: type } = data.type;
+                    let url = null;
+
+                    // url field for article, standard page, standard page (special)
+                    CustomElement.getElementValue('url', value => url = value || url);
+
+                    if (url) {
+                        if (/article/ig.test(type)) {
+                            setup(buildArticleUrl(url));
+                            updateDisabled(element.disabled);
+                            updateSize();
+                        }
+                    }
+                  });
                 });
                 // React when the disabled state changes (e.g. when publishing the item)
                 CustomElement.onDisabledChanged(updateDisabled);
