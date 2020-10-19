@@ -108,6 +108,37 @@
     </div>
     <!-- Custom logic of the Custom element -->
     <script>      
+        (() => {
+            const buildArticleUrl = (string) => {
+                return `${domain}/article/${string}`;
+            };
+
+            try {
+                CustomElement.init((_, context) => {
+                    console.log('live preview initialized');
+                    CustomElement.getItemDetails([context.item.id])
+                        .then(([data]) => {
+                            console.log('live preview content detected', data);
+                            const { codename: type } = data.type;
+                            let url = null;
+
+                            // url field for article, standard page, standard page (special)
+                            CustomElement.getElementValue('url', value => url = value || url);
+
+                            if (url) {
+                                console.log('live preview url value found', url);
+
+                                if (/article/ig.test(type)) {
+                                    url = buildArticleUrl(url);
+                                    console.log('live preview url type article', url);
+                                }
+                            }
+                        });
+                });
+            } catch (err) {
+                console.error(error);
+            }
+        })();
         /*
         function updateDisabled(disabled) {
             if (disabled) {
