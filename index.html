@@ -129,10 +129,12 @@
                                     console.log('live preview url value found', url);
     
                                     if (/article/ig.test(type)) {
-                                        url = buildArticleUrl(url);
-                                        link.setAttribute('href', url);
-                                        link.setAttribute('target', '_blank');
+                                        link.setAttribute('href', buildArticleUrl(url));
+                                    } else if (/taxonomy_custom_content/ig.test(type)) {
+                                        link.setAttribute('href', `/${url}`);
                                     }
+
+                                    link.setAttribute('target', '_blank');
                                 }
                             };
 
