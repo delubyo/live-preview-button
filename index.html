@@ -124,7 +124,7 @@
                             console.log('live preview content detected', data);
                             const { codename: type } = data.type;
 
-                            const callback = (url) => {
+                            const elementValueCallback = (url) => {
                                 if (url) {
                                     console.log('live preview url value found', url);
     
@@ -136,8 +136,15 @@
                                 }
                             };
 
+                            const changeValueCallback = (codeNames) => {
+                                if (codeNames.length > 0 && codeNames[0] === 'url') {
+                                    CustomElement.getElementValue(codeNames[0], elementValueCallback);
+                                }
+                            };
+
                             // url field for article, standard page, standard page (special)
-                            CustomElement.getElementValue('url', callback);
+                            CustomElement.getElementValue('url', elementValueCallback);
+                            CustomElement.observeElementChanges(['url'], changeValueCallback);
                         });
                 });
             } catch (err) {
