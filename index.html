@@ -105,13 +105,12 @@
 <body>
 	<div class="disabled_overlay"></div>
 	<div class="wrapper">
-		<input id="live_input" type="hidden">
-        <div id="live_button"><button>Live Preview</button></div>
+		<input id="live_input" type="text" placeholder="Type in the complete slug of the content">
+		<div id="live_button"><button><a target="_blank" href="https://fe.qa.ncoa.org/">Live Preview</a></button></div>
 	</div>
 
     <!-- Custom logic of the Custom element -->
-    <script>    
-        /**   
+    <script>      
         function updateDisabled(disabled) {
             if (disabled) {
                 $('.disabled_overlay').show();
@@ -167,7 +166,7 @@
         }
       
         initCustomElement();
-      */
+      
     </script>
 </body>
 </html>
