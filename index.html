@@ -104,11 +104,12 @@
 <body>
     <div class="wrapper">
         <p>You must fill out the URL field first above in order to preview the page</p>
-        <a class="btn btn--primary" href="javascript:;">Preview on Live</a>
+        <a class="btn btn--primary js-preview-link" href="javascript:;">Preview on Live</a>
     </div>
     <!-- Custom logic of the Custom element -->
     <script>      
         (() => {
+            const link = document.querySelector('.js-preview-link');
             const domain = 'https://fe.qa.ncoa.org';
 
             const buildArticleUrl = (string) => {
@@ -129,7 +130,8 @@
     
                                     if (/article/ig.test(type)) {
                                         url = buildArticleUrl(url);
-                                        console.log('live preview url type article', url);
+                                        link.setAttribute('href', url);
+                                        link.setAttribute('target', '_blank');
                                     }
                                 }
                             };
