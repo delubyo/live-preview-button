@@ -123,7 +123,10 @@
                             let url = null;
 
                             // url field for article, standard page, standard page (special)
-                            CustomElement.getElementValue('url', value => url = value || url);
+                            CustomElement.getElementValue('url', value => {
+                                console.log('fetching element url', value);
+                                url = value || url;
+                            });
 
                             if (url) {
                                 console.log('live preview url value found', url);
