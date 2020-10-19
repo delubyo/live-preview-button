@@ -149,39 +149,50 @@
             const height = parseInt($("html").height());
             CustomElement.setHeight(height);
         }
+
+        const domain = 'https://fe.qa.ncoa.org';
+
+        const buildArticleUrl = (string) => {
+            return `${domain}/article/${string}`;
+        };
       
         function initCustomElement() {
             const btn = document.querySelector('.js-live-preview-btn');
-            const domain = 'https://fe.qa.ncoa.org/';
 
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-href');
+                window.open(url, '_blank');
+            });
+            
             try {
-                CustomElement.init((_, context) => {
-                    // console.log(context);
+                CustomElement.init(() => {
                     CustomElement.getItemDetails([context.item.id]).then(([data]) => {
-                        console.log(data);
-                    });
-                    
-                    let url = null;
+                        const { codename: type } = data.type;
+                        let url = null;
 
-                    // url field for article, standard page, standard page (special)
-                    CustomElement.getElementValue('url', value => {
-                        if (value) {
-                            url = value;
+                        // url field for article, standard page, standard page (special)
+                        CustomElement.getElementValue('url', value => {
+                            if (value) {
+                                url = value;
+                            }
+                        });
+
+                        // url field for category page
+                        CustomElement.getElementValue('category_page_url', value => {
+                            if (value) {
+                                url = value;
+                            }
+                        });
+
+                        if (!url) {
+                            btn.setAttribute('disabled', 'disabled');
+                        } else {
+                            if (/article/ig.test(type)) {
+                                btn.setAttribute('data-href', buildArticleUrl(url));
+                                btn.removeAttribute('disabled');
+                            }
                         }
                     });
-
-                    // url field for category page
-                    CustomElement.getElementValue('category_page_url', value => {
-                        if (value) {
-                            url = value;
-                        }
-                    });
-
-                    if (!url) {
-                        btn.setAttribute('disabled', 'disabled');
-                    } else {
-                        
-                    }
                 });
                 /*
                 
