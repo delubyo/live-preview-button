@@ -163,11 +163,11 @@
                                     console.log('live preview url value found', url);
     
                                     if (/article/ig.test(type)) {
-                                        domain.style.display = 'none';
+                                        domainContainer.style.display = 'none';
                                         input.style.display = 'none';
                                         link.setAttribute('data-href', buildArticleUrl(url));
                                     } else if (/taxonomy_custom_content/ig.test(type)) {
-                                        domain.style.display = 'none';
+                                        domainContainer.style.display = 'none';
                                         input.style.display = 'none';
                                         input.value = url;
                                         link.setAttribute('data-href', `${domain}/${url}`);
