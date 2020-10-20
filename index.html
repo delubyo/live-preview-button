@@ -144,6 +144,11 @@
                 window.open(url, '_blank');
             });
 
+            input.addEventListener('input', () => {
+                const url = `${domain}/${input.value}`;
+                link.setAttribute('data-href', url);
+            });
+
             try {
                 CustomElement.init((_, context) => {
                     CustomElement.setHeight(62);
