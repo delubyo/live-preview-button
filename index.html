@@ -19,7 +19,16 @@
 		body {
 			margin: 0;
 			padding: 15px 0;
-		}
+        }
+        
+        body .wrapper {
+            display: flex;
+        }
+
+        .js-manual-preview-link {
+            flex: 0 0 35%;
+            margin-right: 15px;
+        }
 		
 		#live_input {		
 			padding: 10px;
@@ -103,6 +112,7 @@
 </head>
 <body>
     <div class="wrapper">
+        <div class="domain">https://fe.qa.ncoa.org/</div>
         <input type="text" class="js-manual-preview-link" />
         <button type="button" class="btn btn--primary js-preview-link" data-href="#">View Live URL</button>
     </div>
@@ -110,6 +120,7 @@
     <script>      
         (() => {
             const link = document.querySelector('.js-preview-link');
+            const input = document.querySelector('.js-manual-preview-link');
             const domain = 'https://fe.qa.ncoa.org';
 
             const buildArticleUrl = (string) => {
@@ -124,7 +135,7 @@
 
             try {
                 CustomElement.init((_, context) => {
-                    // CustomElement.setHeight(62);
+                    CustomElement.setHeight(62);
                     console.log('live preview initialized');
                     CustomElement.getItemDetails([context.item.id])
                         .then(([data]) => {
@@ -136,8 +147,10 @@
                                     console.log('live preview url value found', url);
     
                                     if (/article/ig.test(type)) {
+                                        input.value = `article/${url}`;
                                         link.setAttribute('data-href', buildArticleUrl(url));
                                     } else if (/taxonomy_custom_content/ig.test(type)) {
+                                        input.value = url;
                                         link.setAttribute('data-href', `${domain}/${url}`);
                                     }
                                 }
