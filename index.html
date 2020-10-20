@@ -103,7 +103,8 @@
 </head>
 <body>
     <div class="wrapper">
-        <a class="btn btn--primary js-preview-link" href="javascript:;">View Live URL</a>
+        <input type="text" class="js-manual-preview-link" />
+        <button type="button" class="btn btn--primary js-preview-link" data-href="#">View Live URL</button>
     </div>
     <!-- Custom logic of the Custom element -->
     <script>      
@@ -115,9 +116,15 @@
                 return `${domain}/article/${string}`;
             };
 
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const url = link.getAttribute('data-href');
+                window.open(url, '_blank');
+            });
+
             try {
                 CustomElement.init((_, context) => {
-                    CustomElement.setHeight(62);
+                    // CustomElement.setHeight(62);
                     console.log('live preview initialized');
                     CustomElement.getItemDetails([context.item.id])
                         .then(([data]) => {
@@ -129,14 +136,10 @@
                                     console.log('live preview url value found', url);
     
                                     if (/article/ig.test(type)) {
-                                        link.setAttribute('href', buildArticleUrl(url));
+                                        link.setAttribute('data-href', buildArticleUrl(url));
                                     } else if (/taxonomy_custom_content/ig.test(type)) {
-                                        link.setAttribute('href', `${domain}/${url}`);
-                                    } else {
-                                        
+                                        link.setAttribute('data-href', `${domain}/${url}`);
                                     }
-
-                                    link.setAttribute('target', '_blank');
                                 }
                             };
 
