@@ -103,7 +103,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <a class="btn btn--primary js-preview-link" href="javascript:;">Preview on Live</a>
+        <a class="btn btn--primary js-preview-link" href="javascript:;">View Live URL</a>
     </div>
     <!-- Custom logic of the Custom element -->
     <script>      
@@ -117,6 +117,7 @@
 
             try {
                 CustomElement.init((_, context) => {
+                    CustomElement.setHeight(62);
                     console.log('live preview initialized');
                     CustomElement.getItemDetails([context.item.id])
                         .then(([data]) => {
